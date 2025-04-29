@@ -62,7 +62,7 @@ void CrowdNavigation::Start()
     // 运行时动态关闭日志
     context_->GetSubsystem< Urho3D::Log >()->SetLevel( Urho3D::LOG_INFO );
     //
-    server.setPort( port );
+    server.setPort( port, &sensor_data_queue_ );
     server.start();
 }
 

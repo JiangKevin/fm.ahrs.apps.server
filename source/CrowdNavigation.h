@@ -3,8 +3,9 @@
 
 #include "CivetServer.h"
 #include "base/BaseApp.h"
-#include <rapidcsv.h>
+#include "concurrentqueue/concurrentqueue.h"
 #include "websocket/websocket_server.hpp"
+#include <rapidcsv.h>
 //
 namespace Urho3D
 {
@@ -164,6 +165,8 @@ public:
     uint8_t           deviceAddress_mmc = 0x30;
     uint8_t           deviceAddress_imu = 0x69;
     float             elapsedTime_;
+    //
+    moodycamel::ConcurrentQueue< SENSOR_DB > sensor_data_queue_;
 
     // 创建一个 Document 对象，用于写入 CSV 文件
     rapidcsv::Document csv_doc_;

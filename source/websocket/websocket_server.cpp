@@ -9,7 +9,7 @@ WebSocketServer::~WebSocketServer()
     stop();
 }
 
-void WebSocketServer::setPort( const std::string& port )
+void WebSocketServer::setPort( const std::string& port, moodycamel::ConcurrentQueue< SENSOR_DB >* sensor_data_queue )
 {
     port_ = port;
     acceptor_.close();
@@ -17,6 +17,8 @@ void WebSocketServer::setPort( const std::string& port )
     acceptor_.set_option( net::ip::tcp::acceptor::reuse_address( true ) );
     acceptor_.bind( tcp::endpoint( tcp::v4(), static_cast< unsigned short >( std::stoi( port_ ) ) ) );
     acceptor_.listen();
+    //
+    sensor_data_queue_ = sensor_data_queue;
 }
 
 void WebSocketServer::start()
@@ -76,8 +78,6 @@ void WebSocketServer::acceptConnections()
                 connections_.push_back( ws );
             }
             //
-            handleSend();
-            //
             std::thread(
                 [ this, ws ]()
                 {
@@ -102,6 +102,11 @@ void WebSocketServer::handleReceive( websocket::stream< tcp::socket >& ws )
         {
             ws.read( buffer );
             std::string message = beast::buffers_to_string( buffer.data() );
+            //
+            SENSOR_DB sensor_data;
+            sensor_data.getValueFromString( message );
+            sensor_data_queue_->enqueue( sensor_data );
+            //
             std::cout << "Server received: " << message << std::endl;
             buffer.consume( buffer.size() );
         }
@@ -112,20 +117,18 @@ void WebSocketServer::handleReceive( websocket::stream< tcp::socket >& ws )
     }
 }
 
-void WebSocketServer::handleSend()
+void WebSocketServer::handleSend( std::string message )
 {
     std::lock_guard< std::mutex > lock( connectionsMutex_ );
     for ( auto conn : connections_ )
     {
         try
         {
-            conn->write( net::buffer( "Periodic message from server" ) );
+            conn->write( net::buffer( message ) );
         }
         catch ( ... )
         {
+            //
         }
     }
-    //
-    std::this_thread::sleep_for( std::chrono::seconds( 5 ) );
-    handleSend();
 }
