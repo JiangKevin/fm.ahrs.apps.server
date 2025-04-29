@@ -123,9 +123,21 @@ void WebSocketServer::handleReceive( websocket::stream< tcp::socket >& ws )
             ws.read( buffer );
             std::string message = beast::buffers_to_string( buffer.data() );
             //
-            SENSOR_DB sensor_data;
-            sensor_data.getValueFromString( message );
-            sensor_data_queue_->enqueue( sensor_data );
+            if ( message == "start" )
+            {
+                std::cout << "Server received start command" << std::endl;
+                //
+                SENSOR_DB sensor_data;
+                sensor_data_queue_->enqueue( sensor_data );
+            }
+            else
+            {
+                //
+                SENSOR_DB sensor_data;
+                sensor_data.getValueFromString( message );
+                sensor_data_queue_->enqueue( sensor_data );
+            }
+
             //
             // std::cout << "Server received: " << message << std::endl;
             buffer.consume( buffer.size() );

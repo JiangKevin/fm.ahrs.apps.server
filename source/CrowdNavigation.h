@@ -160,7 +160,7 @@ public:
     Drawable* hitDrawable;
     Node*     axes_node_;
 public:
-    bool              mul_views_{ false };
+    bool              mul_views_{ true };
     const std::string i2cDevice         = "/dev/i2c-1";
     uint8_t           deviceAddress_mmc = 0x30;
     uint8_t           deviceAddress_imu = 0x69;

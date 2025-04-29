@@ -29,12 +29,11 @@ void BaseApp::Setup()
     // Modify engine startup parameters
     engineParameters_[ EP_WINDOW_TITLE ]   = GetTypeName();
     engineParameters_[ EP_LOG_NAME ]       = GetSubsystem< FileSystem >()->GetProgramDir() + GetTypeName() + ".log";
-    engineParameters_[ EP_FULL_SCREEN ]    = false;
+    engineParameters_[ EP_FULL_SCREEN ]    = true;
     engineParameters_[ EP_HEADLESS ]       = false;
     engineParameters_[ EP_SOUND ]          = false;
     engineParameters_[ EP_RESOURCE_PATHS ] = "CoreData;Data;UserData;";
     // 设置引擎参数
-    // engineParameters_[ "FullScreen" ]      = true;  // 设置为全屏模式
     engineParameters_[ "WindowResizable" ] = true;  // 允许窗口调整大小
 
     // Construct a search path to find the resource prefix with two entries:

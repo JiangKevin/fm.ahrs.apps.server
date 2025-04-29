@@ -135,7 +135,7 @@ void CrowdNavigation::CreateScene()
     // Now build the navigation geometry. This will take some time. Note that the navigation mesh will prefer to use
     // physics geometry from the scene nodes, as it often is simpler, but if it can not find any (like in this example)
     // it will use renderable geometry instead
-    navMesh->Build();
+    // navMesh->Build();
 
     // Create an off-mesh connection to each box to make them climbable (tiny boxes are skipped). A connection is built from 2 nodes.
     // Note that OffMeshConnections must be added before building the navMesh, but as we are adding Obstacles next, tiles will be automatically rebuilt.
@@ -239,7 +239,7 @@ void CrowdNavigation::SetupViewport()
     //
     if ( mul_views_ )
     {
-        SharedPtr< Viewport > rearViewport( new Viewport( context_, scene_, cameraNode_->GetComponent< Camera >(), IntRect( graphics->GetWidth() * 2 / 3, 0, graphics->GetWidth(), graphics->GetHeight() / 3 ) ) );
+        SharedPtr< Viewport > rearViewport( new Viewport( context_, scene_, cameraNode_->GetComponent< Camera >(), IntRect( graphics->GetWidth() - 200, 0, graphics->GetWidth(), 200 ) ) );
         renderer->SetViewport( 1, rearViewport );
     }
 }
