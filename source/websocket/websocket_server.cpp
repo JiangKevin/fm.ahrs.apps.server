@@ -107,7 +107,7 @@ void WebSocketServer::handleReceive( websocket::stream< tcp::socket >& ws )
             sensor_data.getValueFromString( message );
             sensor_data_queue_->enqueue( sensor_data );
             //
-            std::cout << "Server received: " << message << std::endl;
+            // std::cout << "Server received: " << message << std::endl;
             buffer.consume( buffer.size() );
         }
     }

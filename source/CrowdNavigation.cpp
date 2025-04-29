@@ -661,6 +661,18 @@ void CrowdNavigation::HandlePostRenderUpdate( StringHash eventType, VariantMap& 
         auto* debug = scene_->GetComponent< DebugRenderer >();
         debug->AddSphere( Sphere( Vector3( 0.0f, 0.0f, 0.0f ), 0.1f ), Color( 1.0f, 1.0f, 1.0f ) );
     }
+    //
+    SENSOR_DB sensor_data;
+    bool      found = sensor_data_queue_.try_dequeue( sensor_data );
+    //
+    if ( found )
+    {
+        infoText_->SetText( sensor_data.to_string().c_str() );
+        // 从欧拉角创建四元数
+        // axes_node->SetRotation( Quaternion( sensor_data.quate_w, Vector3( sensor_data.quate_x, sensor_data.quate_y, sensor_data.quate_z ) ) );
+        axes_node_->SetRotation( Quaternion( sensor_data.roll, sensor_data.pitch, sensor_data.yaw ) );
+        axes_node_->SetPosition( Vector3( sensor_data.pos_x, sensor_data.pos_y + 10.0f, sensor_data.pos_z ) );
+    }
 }
 
 void CrowdNavigation::HandleCrowdAgentFailure( StringHash eventType, VariantMap& eventData )
