@@ -4,37 +4,37 @@
 #include <boost/asio.hpp>
 #include <boost/beast/core.hpp>
 #include <boost/beast/websocket.hpp>
-#include <thread>
-#include <string>
-#include <vector>
 #include <mutex>
+#include <string>
+#include <thread>
+#include <vector>
 
-namespace beast = boost::beast;
-namespace http = beast::http;
+namespace beast     = boost::beast;
+namespace http      = beast::http;
 namespace websocket = beast::websocket;
-namespace net = boost::asio;
-using tcp = net::ip::tcp;
+namespace net       = boost::asio;
+using tcp           = net::ip::tcp;
 
-class WebSocketServer {
+class WebSocketServer
+{
 public:
     WebSocketServer();
     ~WebSocketServer();
-    void setPort(const std::string& port);
+    void setPort( const std::string& port );
     void start();
     void stop();
-
 private:
     void acceptConnections();
-    void handleConnection(websocket::stream<tcp::socket> ws);
-    void sendPeriodicMessages();
+    void handleReceive( websocket::stream< tcp::socket >& ws );
+    void handleSend();
 
-    std::string port_;
-    net::io_context ioc_;
-    tcp::acceptor acceptor_;
-    std::thread serverThread_;
-    bool running_;
-    std::vector<websocket::stream<tcp::socket>*> connections_;
-    std::mutex connectionsMutex_;
+    std::string                                      port_;
+    net::io_context                                  ioc_;
+    tcp::acceptor                                    acceptor_;
+    std::thread                                      serverThread_;
+    bool                                             running_;
+    std::vector< websocket::stream< tcp::socket >* > connections_;
+    std::mutex                                       connectionsMutex_;
 };
 
 #endif
