@@ -1,0 +1,3 @@
+/bin/ahrs_server
+/bin/*.log
+/build
