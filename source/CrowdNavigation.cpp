@@ -667,7 +667,7 @@ void CrowdNavigation::HandlePostRenderUpdate( StringHash eventType, VariantMap& 
     //
     if ( found )
     {
-        infoText_->SetText( sensor_data.to_string().c_str() );
+        infoText_->SetText( sensor_data.to_info().c_str() );
         // 从欧拉角创建四元数
         // axes_node->SetRotation( Quaternion( sensor_data.quate_w, Vector3( sensor_data.quate_x, sensor_data.quate_y, sensor_data.quate_z ) ) );
         axes_node_->SetRotation( Quaternion( sensor_data.roll, sensor_data.pitch, sensor_data.yaw ) );
@@ -756,7 +756,5 @@ void CrowdNavigation::setNewPos( float x, float y, float z )
 //
 void CrowdNavigation::HandleQuit( StringHash eventType, VariantMap& eventData )
 {
-    if ( app_mode_ == 0 )
-    {
-    }
+    server.stop();
 }

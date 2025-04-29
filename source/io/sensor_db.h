@@ -47,11 +47,24 @@ struct SENSOR_DB
                + std::to_string( pos_x ) + "," + std::to_string( pos_y ) + "," + std::to_string( pos_z );
     };
     //
+    std::string to_info()
+    {
+        //
+        std::string info = "Time: " + std::to_string( time ) + "\n";
+        info += "Accelerometer: (" + std::to_string( acc_x ) + ", " + std::to_string( acc_y ) + ", " + std::to_string( acc_z ) + ")\n";
+        info += "Gyroscope: (" + std::to_string( gyro_x ) + ", " + std::to_string( gyro_y ) + ", " + std::to_string( gyro_z ) + ")\n";
+        info += "Magnetometer: (" + std::to_string( mag_x ) + ", " + std::to_string( mag_y ) + ", " + std::to_string( mag_z ) + ")\n";
+        info += "Quaternion: (" + std::to_string( quate_x ) + ", " + std::to_string( quate_y ) + ", " + std::to_string( quate_z ) + ", " + std::to_string( quate_w ) + ")\n";
+        info += "Roll: " + std::to_string( roll ) + " pitch: " + std::to_string( pitch ) + " yaw: " + std::to_string( yaw ) + "\n";
+        info += "Position: (" + std::to_string( pos_x ) + ", " + std::to_string( pos_y ) + ", " + std::to_string( pos_z ) + ")\n";
+        return info;
+    }
+    //
     void getValueFromString( std::string v )
     {
         char delimiter = ',';
         auto values    = splitString( v, delimiter );
-        // 
+        //
         if ( values.size() == 20 )
         {
             time    = std::stof( values[ 0 ] );
