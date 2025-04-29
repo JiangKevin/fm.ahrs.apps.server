@@ -29,10 +29,15 @@ void BaseApp::Setup()
     // Modify engine startup parameters
     engineParameters_[ EP_WINDOW_TITLE ]   = GetTypeName();
     engineParameters_[ EP_LOG_NAME ]       = GetSubsystem< FileSystem >()->GetProgramDir() + GetTypeName() + ".log";
-    engineParameters_[ EP_FULL_SCREEN ]    = true;
+    engineParameters_[ EP_FULL_SCREEN ]    = false;
     engineParameters_[ EP_HEADLESS ]       = false;
     engineParameters_[ EP_SOUND ]          = false;
     engineParameters_[ EP_RESOURCE_PATHS ] = "CoreData;Data;UserData;";
+    engineParameters_[ "WindowWidth" ]     = 1600;
+    engineParameters_[ "WindowHeight" ]    = 900;
+    // 设置窗口的起始位置
+    engineParameters_[ "WindowPositionX" ] = 0;
+    engineParameters_[ "WindowPositionY" ] = 0;
     // 设置引擎参数
     engineParameters_[ "WindowResizable" ] = true;  // 允许窗口调整大小
 
