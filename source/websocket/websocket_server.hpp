@@ -17,6 +17,12 @@ namespace websocket = beast::websocket;
 namespace net       = boost::asio;
 using tcp           = net::ip::tcp;
 //
+struct NET_PTR
+{
+    websocket::stream< tcp::socket >* connection_;
+    std::thread*                      thread_;
+};
+//
 class WebSocketServer
 {
 public:
@@ -30,13 +36,14 @@ private:
     void handleReceive( websocket::stream< tcp::socket >& ws );
     void handleSend( std::string message );
 
-    std::string                                      port_;
-    net::io_context                                  ioc_;
-    tcp::acceptor                                    acceptor_;
-    std::thread                                      serverThread_;
-    bool                                             running_;
-    std::vector< websocket::stream< tcp::socket >* > connections_;
-    std::mutex                                       connectionsMutex_;
+    std::string     port_;
+    net::io_context ioc_;
+    tcp::acceptor   acceptor_;
+    std::thread     serverThread_;
+    bool            running_;
+    // std::vector< websocket::stream< tcp::socket >* > connections_;
+    std::vector< NET_PTR > net_ptrs_;
+    std::mutex             connectionsMutex_;
 public:
     moodycamel::ConcurrentQueue< SENSOR_DB >* sensor_data_queue_;
 };

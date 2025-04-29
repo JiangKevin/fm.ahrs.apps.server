@@ -756,5 +756,6 @@ void CrowdNavigation::setNewPos( float x, float y, float z )
 //
 void CrowdNavigation::HandleQuit( StringHash eventType, VariantMap& eventData )
 {
+    printf("Quit\n");
     server.stop();
 }

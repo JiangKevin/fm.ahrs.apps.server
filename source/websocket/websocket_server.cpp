@@ -30,36 +30,48 @@ void WebSocketServer::start()
             [ this ]()
             {
                 acceptConnections();
-                // std::thread sendThread( &WebSocketServer::handleSend, this );
-                // sendThread.join();
             } );
     }
 }
 
 void WebSocketServer::stop()
 {
+    printf( "WebSocketServer::stop()\n" );
+    //
     if ( running_ )
     {
         running_ = false;
         ioc_.stop();
+        //
         if ( serverThread_.joinable() )
         {
-            serverThread_.join();
+            printf( "Server thread joined : %d\n", serverThread_.get_id() );
+            // serverThread_.join();
         }
         {
             std::lock_guard< std::mutex > lock( connectionsMutex_ );
-            for ( auto conn : connections_ )
+            //
+            for ( auto net_ptr : net_ptrs_ )
             {
                 try
                 {
-                    conn->close( websocket::close_code::normal );
-                    delete conn;
+                    net_ptr.connection_->close( websocket::close_code::normal );
+                    //
+                    if ( net_ptr.thread_->joinable() )
+                    {
+                        printf( "net_ptr.thread_ joined : %d\n", net_ptr.thread_->get_id() );
+                        // net_ptr.thread_->join();
+                        delete net_ptr.thread_;
+                    }
+                    //
+                    delete net_ptr.connection_;
                 }
                 catch ( ... )
                 {
+                    //
                 }
             }
-            connections_.clear();
+            net_ptrs_.clear();
         }
     }
 }
@@ -72,19 +84,26 @@ void WebSocketServer::acceptConnections()
         {
             tcp::socket socket{ ioc_ };
             acceptor_.accept( socket );
+            //
             auto ws = new websocket::stream< tcp::socket >( std::move( socket ) );
             {
                 std::lock_guard< std::mutex > lock( connectionsMutex_ );
-                connections_.push_back( ws );
             }
             //
-            std::thread(
+            std::thread rec_thread = std::thread(
                 [ this, ws ]()
                 {
                     ws->accept();
                     handleReceive( *ws );
-                } )
-                .detach();
+                } );
+            //
+            rec_thread.detach();
+
+            //
+            NET_PTR net_ptr;
+            net_ptr.connection_ = ws;
+            net_ptr.thread_     = &rec_thread;
+            net_ptrs_.push_back( net_ptr );
         }
     }
     catch ( const std::exception& e )
@@ -120,11 +139,12 @@ void WebSocketServer::handleReceive( websocket::stream< tcp::socket >& ws )
 void WebSocketServer::handleSend( std::string message )
 {
     std::lock_guard< std::mutex > lock( connectionsMutex_ );
-    for ( auto conn : connections_ )
+    //
+    for ( auto net_ptr : net_ptrs_ )
     {
         try
         {
-            conn->write( net::buffer( message ) );
+            net_ptr.connection_->write( net::buffer( message ) );
         }
         catch ( ... )
         {
