@@ -37,6 +37,7 @@ void WebSocketServer::start()
 void WebSocketServer::stop()
 {
     printf( "WebSocketServer::stop()\n" );
+    handleSend( "stop" );
     //
     if ( running_ )
     {
@@ -138,17 +139,20 @@ void WebSocketServer::handleReceive( websocket::stream< tcp::socket >& ws )
 
 void WebSocketServer::handleSend( std::string message )
 {
-    std::lock_guard< std::mutex > lock( connectionsMutex_ );
-    //
-    for ( auto net_ptr : net_ptrs_ )
+    if ( running_ )
     {
-        try
+        std::lock_guard< std::mutex > lock( connectionsMutex_ );
+        //
+        for ( auto net_ptr : net_ptrs_ )
         {
-            net_ptr.connection_->write( net::buffer( message ) );
-        }
-        catch ( ... )
-        {
-            //
+            try
+            {
+                net_ptr.connection_->write( net::buffer( message ) );
+            }
+            catch ( ... )
+            {
+                //
+            }
         }
     }
 }
