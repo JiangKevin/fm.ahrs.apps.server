@@ -1,10 +1,11 @@
 #pragma once
 //
+#include <cmath>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
-
+// 
 static std::vector< std::string > splitString( const std::string& str, char delimiter )
 {
     std::vector< std::string > result;
