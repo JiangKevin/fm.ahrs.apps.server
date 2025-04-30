@@ -60,7 +60,7 @@ void CrowdNavigation::Start()
     // Set the mouse mode to use in the sample
     BaseApp::InitMouseMode( MM_ABSOLUTE );
     // 运行时动态关闭日志
-    context_->GetSubsystem< Urho3D::Log >()->SetLevel( Urho3D::LOG_INFO );
+    // context_->GetSubsystem< Urho3D::Log >()->SetLevel( Urho3D::LOG_INFO );
     //
     server.setPort( port, &sensor_data_queue_ );
     server.start();

@@ -1,4 +1,5 @@
 #include "websocket_server.hpp"
+#include <Urho3D/IO/Log.h>
 #include <chrono>
 #include <iostream>
 
@@ -23,6 +24,8 @@ void WebSocketServer::setPort( const std::string& port, moodycamel::ConcurrentQu
 
 void WebSocketServer::start()
 {
+    URHO3D_LOGINFO( "WebSocketServer::start" );
+
     if ( ! running_ )
     {
         running_      = true;
@@ -91,6 +94,9 @@ void WebSocketServer::acceptConnections()
                 std::lock_guard< std::mutex > lock( connectionsMutex_ );
             }
             //
+            printf( "acceptConnections \n" );
+            URHO3D_LOGINFO( "acceptConnections" );
+            //
             std::thread rec_thread = std::thread(
                 [ this, ws ]()
                 {
@@ -123,7 +129,7 @@ void WebSocketServer::handleReceive( websocket::stream< tcp::socket >& ws )
             ws.read( buffer );
             std::string message = beast::buffers_to_string( buffer.data() );
             //
-            if ( message == "start" )
+            if ( message == "Start" )
             {
                 std::cout << "Server received start command" << std::endl;
                 //
@@ -139,7 +145,7 @@ void WebSocketServer::handleReceive( websocket::stream< tcp::socket >& ws )
             }
 
             //
-            // std::cout << "Server received: " << message << std::endl;
+            std::cout << "Server received: " << message << std::endl;
             buffer.consume( buffer.size() );
         }
     }

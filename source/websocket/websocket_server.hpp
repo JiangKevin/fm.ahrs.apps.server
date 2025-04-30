@@ -41,7 +41,6 @@ private:
     tcp::acceptor   acceptor_;
     std::thread     serverThread_;
     bool            running_;
-    // std::vector< websocket::stream< tcp::socket >* > connections_;
     std::vector< NET_PTR > net_ptrs_;
     std::mutex             connectionsMutex_;
 public:
