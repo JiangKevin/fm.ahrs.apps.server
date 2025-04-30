@@ -5,7 +5,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
-// 
+//
 static std::vector< std::string > splitString( const std::string& str, char delimiter )
 {
     std::vector< std::string > result;
@@ -29,6 +29,8 @@ static std::string transaction_to_string( float value )
     {
         out = std::to_string( value );
     }
+    //
+    return out;
 }
 //
 struct SENSOR_DB

@@ -145,7 +145,7 @@ void WebSocketServer::handleReceive( websocket::stream< tcp::socket >& ws )
             }
 
             //
-            std::cout << "Server received: " << message << std::endl;
+            // std::cout << "Server received: " << message << std::endl;
             buffer.consume( buffer.size() );
         }
     }
