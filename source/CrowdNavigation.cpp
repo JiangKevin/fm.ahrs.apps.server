@@ -539,7 +539,7 @@ void CrowdNavigation::MoveCamera( float timeStep )
     else if ( input->GetKeyPress( KEY_H ) )
     {
         axes_node_->SetPosition( Vector3( 0.0f, 10.0f, 0.0f ) );
-        axes_node_->SetRotation( Quaternion( 0.0f,0.0f,0.0f) );
+        axes_node_->SetRotation( Quaternion( 0.0f, 0.0f, 0.0f ) );
     }
     //
     // axes_node->SetPosition( Vector3( MainCameraNode_->GetPosition().x_, MainCameraNode_->GetPosition().y_, MainCameraNode_->GetPosition().z_ + 150.0f ) );
@@ -682,7 +682,7 @@ void CrowdNavigation::HandlePostRenderUpdate( StringHash eventType, VariantMap& 
         axes_node_->SetRotation( Quaternion( sensor_data.roll, sensor_data.pitch, sensor_data.yaw ) );
         // auto pos = axes_node_->GetPosition();
         // axes_node_->SetPosition( Vector3( pos.x_ + sensor_data.pos_x, pos.y_ + sensor_data.pos_y, pos.z_ + sensor_data.pos_z ) );
-        axes_node_->SetPosition( Vector3( sensor_data.pos_x, sensor_data.pos_y, sensor_data.pos_z ) );
+        axes_node_->SetPosition( Vector3( sensor_data.pos_x, sensor_data.pos_y + 10.0f, sensor_data.pos_z ) );
     }
 }
 
