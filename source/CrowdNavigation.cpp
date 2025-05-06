@@ -679,7 +679,7 @@ void CrowdNavigation::HandlePostRenderUpdate( StringHash eventType, VariantMap& 
         infoText_->SetText( info_str.c_str() );
         // 从欧拉角创建四元数
         // axes_node->SetRotation( Quaternion( sensor_data.quate_w, Vector3( sensor_data.quate_x, sensor_data.quate_y, sensor_data.quate_z ) ) );
-        axes_node_->SetRotation( Quaternion( sensor_data.roll, sensor_data.pitch, sensor_data.yaw ) );
+        axes_node_->SetRotation( Quaternion( sensor_data.roll, sensor_data.yaw, sensor_data.pitch ) );
         // auto pos = axes_node_->GetPosition();
         // axes_node_->SetPosition( Vector3( pos.x_ + sensor_data.pos_x, pos.y_ + sensor_data.pos_y, pos.z_ + sensor_data.pos_z ) );
         axes_node_->SetPosition( Vector3( sensor_data.pos_x, sensor_data.pos_y + 10.0f, sensor_data.pos_z ) );
