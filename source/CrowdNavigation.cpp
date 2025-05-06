@@ -539,7 +539,7 @@ void CrowdNavigation::MoveCamera( float timeStep )
     else if ( input->GetKeyPress( KEY_H ) )
     {
         axes_node_->SetPosition( Vector3( 0.0f, 10.0f, 0.0f ) );
-        axes_node_->SetScale( Vector3( 0.1f, 0.1f, 0.1f ) );
+        axes_node_->SetRotation( Quaternion( 0.0f,0.0f,0.0f) );
     }
     //
     // axes_node->SetPosition( Vector3( MainCameraNode_->GetPosition().x_, MainCameraNode_->GetPosition().y_, MainCameraNode_->GetPosition().z_ + 150.0f ) );
